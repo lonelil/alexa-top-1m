@@ -21,11 +21,20 @@ jobs:
       - name: Create TXTs
         run: |
           mkdir -p txt
-          awk -F ',' '{print $2}' top-1m.csv|cat > txt/1m.txt;
-          awk -F ',' '{print $2}' top-1m.csv|head -100000 > txt/100000.txt;
-          awk -F ',' '{print $2}' top-1m.csv|head -10000 > txt/10000.txt;
-          awk -F ',' '{print $2}' top-1m.csv|head -1000 > txt/1000.txt;
-          awk -F ',' '{print $2}' top-1m.csv|head -100 > txt/100.txt;
+          awk -F ',' '{print $2}' top-1m.csv|cat > txt/1m.txt
+          awk -F ',' '{print $2}' top-1m.csv|head -100000 > txt/100000.txt
+          awk -F ',' '{print $2}' top-1m.csv|head -10000 > txt/10000.txt
+          awk -F ',' '{print $2}' top-1m.csv|head -1000 > txt/1000.txt
+          awk -F ',' '{print $2}' top-1m.csv|head -100 > txt/100.txt
+
+      - name: Create CSVs
+        run: |
+          mkdir -p csv
+          cp top-1m.csv csv/1m.csv
+          head -100000 top-1m.csv >> csv/100000.csv
+          head -10000 top-1m.csv >> csv/10000.csv
+          head -1000 top-1m.csv >> csv/1000.csv
+          head -100 top-1m.csv >> csv/100.csv
 
       - name: Remove 
         run: |
