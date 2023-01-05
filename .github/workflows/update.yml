@@ -36,8 +36,10 @@ jobs:
           head -1000 top-1m.csv >> csv/1000.csv
           head -100 top-1m.csv >> csv/100.csv
 
-      - name: Remove 
-        run: rm top-1m.csv*
+      - name: Miscellaneous
+        run: |
+          rm top-1m.csv*
+          echo `date +%s` > last-updated.txt
 
       - name: Push to GitHub 
         run: |
