@@ -1,0 +1,33 @@
+name: Update
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Top 1M List
+        run: |
+          wget https://s3.amazonaws.com/alexa-static/top-1m.csv.zip
+          unzip top-1m.csv.zip
+
+      - name: Create TXTs
+        run: |
+          mkdir -p txt
+          cd txt
+          awk -F ',' '{print $2}' top-1m.csv|cat > 1m.txt;
+          awk -F ',' '{print $2}' top-1m.csv|head -100000 > 100000.txt;
+          awk -F ',' '{print $2}' top-1m.csv|head -10000 > 10000.txt;
+          awk -F ',' '{print $2}' top-1m.csv|head -1000 > 1000.txt;
+          awk -F ',' '{print $2}' top-1m.csv|head -100 > 100.txt;
+
+      - name: Remove 
+        run: |
+          rm top-1m.csv*
