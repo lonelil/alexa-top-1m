@@ -23,7 +23,7 @@ jobs:
           mkdir -p txt
           awk -F ',' '{print $2}' top-1m.csv|cat > txt/1m.txt;
           awk -F ',' '{print $2}' top-1m.csv|head -100000 > txt/100000.txt;
-          awk -F ',' '{print $2}' top-1m.csv|head -10000 > v10000.txt;
+          awk -F ',' '{print $2}' top-1m.csv|head -10000 > txt/10000.txt;
           awk -F ',' '{print $2}' top-1m.csv|head -1000 > txt/1000.txt;
           awk -F ',' '{print $2}' top-1m.csv|head -100 > txt/100.txt;
 
