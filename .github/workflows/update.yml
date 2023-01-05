@@ -1,6 +1,10 @@
 name: Update
 
 on:
+  push:
+    paths:
+      - '.github/workflows/update.yml'
+  
   schedule:
   - cron: "0 0 * * *"
 
@@ -31,10 +35,10 @@ jobs:
         run: |
           mkdir -p csv
           cp top-1m.csv csv/1m.csv
-          head -100000 top-1m.csv >> csv/100000.csv
-          head -10000 top-1m.csv >> csv/10000.csv
-          head -1000 top-1m.csv >> csv/1000.csv
-          head -100 top-1m.csv >> csv/100.csv
+          head -100000 top-1m.csv > csv/100000.csv
+          head -10000 top-1m.csv > csv/10000.csv
+          head -1000 top-1m.csv > csv/1000.csv
+          head -100 top-1m.csv > csv/100.csv
 
       - name: Miscellaneous
         run: |
