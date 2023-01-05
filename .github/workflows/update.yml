@@ -31,3 +31,12 @@ jobs:
       - name: Remove 
         run: |
           rm top-1m.csv*
+
+      - name: Push to GitHub 
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update ($(date +'%Y-%m-%dT%H:%M:%S'))"
+          git push
+
