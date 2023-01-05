@@ -37,8 +37,7 @@ jobs:
           head -100 top-1m.csv >> csv/100.csv
 
       - name: Remove 
-        run: |
-          rm top-1m.csv*
+        run: rm top-1m.csv*
 
       - name: Push to GitHub 
         run: |
