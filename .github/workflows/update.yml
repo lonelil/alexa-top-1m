@@ -47,8 +47,8 @@ jobs:
 
       - name: Push to GitHub 
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name lonelil
+          git config user.email 51315646+lonelil@users.noreply.github.com
           git add .
           git commit -m "Update ($(date +'%Y-%m-%dT%H:%M:%S'))"
           git push
