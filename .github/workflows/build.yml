@@ -1,27 +1,37 @@
-name: Update
+name: Build
 
 on:
   push:
     paths:
-      - '.github/workflows/update.yml'
+      - '.github/workflows/build.yml'
   
   schedule:
   - cron: "0 0 * * *"
 
   workflow_dispatch:
+  
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "build"
+  cancel-in-progress: true
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
       - name: Download Top 1M List
         run: |
           wget https://s3.amazonaws.com/alexa-static/top-1m.csv.zip
           unzip top-1m.csv.zip
-
       - name: Create TXTs
         run: |
           mkdir -p txt
@@ -30,7 +40,6 @@ jobs:
           awk -F ',' '{print $2}' top-1m.csv|head -10000 > txt/10000.txt
           awk -F ',' '{print $2}' top-1m.csv|head -1000 > txt/1000.txt
           awk -F ',' '{print $2}' top-1m.csv|head -100 > txt/100.txt
-
       - name: Create CSVs
         run: |
           mkdir -p csv
@@ -39,12 +48,10 @@ jobs:
           head -10000 top-1m.csv > csv/10000.csv
           head -1000 top-1m.csv > csv/1000.csv
           head -100 top-1m.csv > csv/100.csv
-
       - name: Miscellaneous
         run: |
           rm top-1m.csv*
           echo `date +%s` > last-updated.txt
-
       - name: Push to GitHub 
         run: |
           git config user.name lonelil
@@ -52,4 +59,18 @@ jobs:
           git add .
           git commit -m "Update ($(date +'%Y-%m-%dT%H:%M:%S'))"
           git push
-
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
+          
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
